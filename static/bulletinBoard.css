@@ -1,0 +1,165 @@
+.container{
+    padding-top: 4rem;
+}
+
+#bulletinBoard{
+    margin: auto;
+    max-width: 600px;
+}
+
+.thread_name{
+    margin: 1rem auto;
+    font-size: 2rem;
+    text-align: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid black;
+}
+
+.mass_data{
+    border-bottom: 1px dashed black;
+}
+
+.info{
+    color: grey;
+    font-size: 14px;
+}
+
+.content{
+    padding-top: 0.5rem;
+    padding-left: 2rem;
+    word-wrap: break-word;
+    margin-bottom: 1rem;
+    margin-top: 0.2rem;
+    font-size: 18px;
+}
+
+#post{
+    font-size: 1.5rem;;
+    text-align: center;
+}
+
+#post_container{
+    margin: 3rem 0;
+    text-align: center;
+}
+
+.name_div{
+    margin-top: 1rem;
+    display:flex;
+}
+
+#error{
+    margin-top: 1rem;
+    color: red;
+    text-align: center;
+}
+
+.name_div > span{
+    width: 400px;
+    display:flex;
+    margin: 1rem auto 0 auto;
+}
+
+.response_div{
+    margin-top: 0.5rem;
+    display:flex;
+}
+
+.response_div > span{
+    width: 400px;
+    display:flex;
+    margin: 1rem auto 0 auto;
+}
+
+.content_div > span{
+    width: 400px;
+    display:flex;
+    margin: 1rem auto 0 auto;
+}
+
+.function{
+    display: flex;
+    justify-content: space-around;
+    height: 2rem;
+}
+
+.function > a{
+    text-decoration: none;
+    color: gray;
+}
+
+.function > .good > .btn{
+    padding: 0;
+    margin-right: 0.2rem;
+    color: red;
+}
+
+.function > .bad > .btn{
+    padding: 0;
+    margin-right: 0.2rem;
+    color: blue;
+}
+
+.btn:focus{
+    outline: none;
+}
+
+.btn_area{
+    margin-top: 1rem;
+}
+
+#post_btn{
+    width: 6rem;
+    height: 2rem;
+    background-color: rgb(37, 209, 157);
+    border-radius: 3px;
+    box-shadow: 1px 1px 1px seagreen, -1px -1px 1px seagreen;
+    color: white;
+}
+#post_btn:hover {
+    left: 0;
+    top: 0;
+    box-shadow: 0 0 4px white, -2px -2px 4px white;
+    color: white;
+}
+
+.fixed{
+    position: fixed;
+    left: 80%;
+    top: 70%;
+}
+
+.fixed > a{
+    width: 100%;
+    color: white;
+    padding: 1.1rem;
+    text-decoration: none;
+    background-color: rgb(37, 209, 157);
+    box-shadow: 1px 1px 1px seagreen, -1px -1px 1px seagreen;
+    border-radius: 2.5rem;
+    margin: 1.5rem auto;
+}
+
+.fixed > #update_form > #update{
+    width: 100%;
+    color: white;
+    background-color: rgb(37, 209, 157);
+    box-shadow: 1px 1px 1px seagreen, -1px -1px 1px seagreen;
+    border-radius: 2.5rem;
+    padding: 1rem;
+    margin: 1.5rem auto;
+}
+
+.fixed > a:hover {
+    left: 0;
+    top: 0;
+    box-shadow: 0 0 4px white, -2px -2px 4px white;
+    color: white;
+}
+
+.fixed > #update_form > #update:hover{
+    left: 0;
+    top: 0;
+    box-shadow: 0 0 4px white, -2px -2px 4px white;
+    color: white;
+}

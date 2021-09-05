@@ -1,0 +1,13 @@
+header{
+    width: 100%;
+    position: fixed;
+    height: 3rem;
+    background-color: rgb(37, 209, 157);    
+}
+
+.header{
+    font-size:2rem;
+    color: white;
+    margin-left: 2rem;
+}
+

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{% static 'header.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'bulletinBoard.css' %}">
+{% endblock header %}
+
+{% block content %}
+<header>
+    <div class="header">掲示板</div>
+</header>
+
+<div class="container">
+    <div id="bulletinBoard">
+        <div class="thread_name">スレッド名 : <span id="thread_name_span">{{ thread_name }}</span></div>
+        {% for post_data in post_datas %}
+        <div class="mass_data" id="{{ post_data.post_id }}">
+            <div class="info"><span class="name">{{ post_data.post_id }} . {{ post_data.name }}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="time">{{ post_data.postdate }} </span> </div>
+            <div class="content">
+                {% if post_data.response %}
+                <div>{{ post_data.response.post_id }} >>></div>
+                {% endif %}
+                <div>{{ post_data.content }}</div>
+            </div>
+            <div class="function">
+                <a href="#post_container" class="response" id="response{{ post_data.post_id }}">返信</a>
+                <div class="good"><button class="btn btn_good" id="good{{ post_data.post_id }}" type="submit" name="good{{ post_data.post_id }}">○</button><span class="good_number" id="good_number_show{{ post_data.post_id }}">{{ post_data.good }}</span></div>
+                <div class="bad"><button class="btn btn_bad" id="bad{{ post_data.post_id }}" type="submit" name="post_btn{{ post_data.post_id }}">×</button><span class="bad_number" id="bad_number_show{{ post_data.post_id }}">{{ post_data.bad }}</span></div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div id="post_container">
+        <form id="post_form" action="" method="POST">{% csrf_token %}
+            <div id="post">投稿フォーム</div>
+            <div id="error"></div>
+            <div class="name_div">
+                <span>
+                    <div class="name_exp">名前&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                    <input required="required" id="post_name" type="text" placeholder="40文字以内">
+                </span>
+            </div>
+            <div class="response_div">
+                <span>
+                    <div class="response_exp">返信相手&nbsp;&nbsp;</div>
+                    <input id="response_id" type="text" placeholder="なし">
+                </span>
+            </div>
+            <div class="content_div">
+                <span>
+                    <div class="content_exp">
+                        投稿文&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                    <textarea placeholder="200文字以内" required="required" name="post_content" id="post_content" cols="30" rows="10" value="200文字以内"></textarea>
+                </span>
+            </div>
+            <div class="btn_area">
+                <button class="btn" type="submit" id="post_btn" name="post_btn">投稿</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="fixed">
+    <form id="update_form" action="" method="POST">{% csrf_token %}
+        <button class="btn" type="submit" id="update" name="update">読込</button>
+    </form>
+    <a href="#post_container">投稿</a>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="{% static 'bulletinBoard.js' %}"></script>
+{% endblock content%}

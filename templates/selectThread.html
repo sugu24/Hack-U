@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{% static 'header.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'selectThread.css' %}">
+{% endblock header %}
+
+{% block content %}
+<header>
+    <div class="header">掲示板</div>
+</header>
+
+<div class="container">
+    <div id="create_thread">
+        <form id="create_thread_form" action="" method="POST">{% csrf_token %}
+            <div class="name_div">↓　新しいスレッドの作成　↓</div>
+            <input required="required"　id="thread_name" name="thread_name" type="text" placeholder="スレッド名（40文字以内）">
+            <button class="btn" type="submit" id="create_thread_btn" name="create_thread_btn">スレッド作成</button>
+        </form>
+    </div>
+    <div id="select_thread">
+        {% for thread in thread_all %}
+        <div class="mass_data">
+            <a href="{% url 'bulletinBoard' thread.pk %}" class="thread_btn">{{ thread.name }}</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="{% static 'selectThread.js' %}"></script>
+{% endblock content%}
+
+
+
