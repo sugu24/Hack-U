@@ -35,6 +35,7 @@ var post_count = 0
 var bulletinBoard = document.getElementById('bulletinBoard')
 var good_stamp = new Set()
 var bad_stamp = new Set()
+var delete_stock = new Set()
 
 var createMassData = function(id, name, response, postdate, content, good, bad){
     //console.log(id, name, response, date, content, good, bad)
@@ -75,6 +76,16 @@ var getPostsData = function(){
 $('#update_form').on('submit', function(e) {
     e.preventDefault()
     getPostsData()
+})
+
+$('#delete').on('click', function(e){
+    e.preventDefault()
+    for(var delete_element of delete_stock){
+        document.getElementById(delete_element).remove()
+    }
+    post_count -= delete_stock.size
+    delete_stock = new Set()
+    document.getElementById('delete').style.visibility = "hidden"
 })
 
 $('#post_form').on('submit', function(e) {
@@ -166,7 +177,6 @@ $(document).on('click', '.btn_bad', function(){
         'dataType': 'json'
     })
     .done(function(response){
-        if(response.flag == "skip")return
         if(action == "plus"){
             document.getElementById('bad_number_show'+String(post_id)).style.color = "blue"
             document.getElementById('bad_number_show'+String(post_id)).style.fontWeight = "bold"
@@ -200,15 +210,17 @@ dataSocket.onmessage = function(e) {
     if (data.flag == "good_action"){
         document.getElementById('good_number_show'+String(data.post_id)).innerText = data.number
     }else if(data.flag == "bad_action"){
-        console.log(data.number)
         document.getElementById('bad_number_show'+String(data.post_id)).innerText = data.number
     }else if(data.flag == "delete_action"){
         if(data.response != null){
             for(var object of data.response){
-                document.getElementById(String(object["post_id"])).remove()
+                delete_stock.add(String(object["post_id"]))
+                document.getElementById(String(object["post_id"])).style.color = "#00000042"
             }
         }
-        document.getElementById(String(data.delete)).remove()
+        delete_stock.add(String(data.delete))
+        document.getElementById(String(data.delete)).style.color = "#00000042"
+        document.getElementById('delete').style.visibility = "visible"
     }
 };
 

@@ -37,10 +37,10 @@ def BulletinBoardView(request, pk):
             name = request.POST.get('name')
             time = request.POST.get('time')
             content = request.POST.get('content')
-            process = subprocess.Popen(['python', '../bert/bert/bert.py', '{}'.format(content)], encoding='utf8', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            result, error = process.communicate()
-            if result == "negative":
-                return JsonResponse({"error":"ネガティブな投稿なので投稿文を確認してください"})
+            #process = subprocess.Popen(['python3', './/bert/bert/bert.py', '{}'.format(content)], encoding='utf8', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            #result, error = process.communicate()
+            #if result[:8] == "negative":
+            #    return JsonResponse({"error":"ネガティブな投稿なので投稿文を確認してください"})
             postdata_object = PostDataModel.objects.create(
                 thread = thread_object,
                 post_id = thread_object.next_id,
@@ -88,12 +88,28 @@ def BulletinBoardView(request, pk):
         elif request_type == 'bad_action':
             post_id = request.POST.get('post_id')
             thread_object = ThreadModel.objects.get(pk=pk)
-            post_object = PostDataModel.objects.filter(thread=thread_object).get(post_id=post_id)
+            try:
+                post_object = PostDataModel.objects.filter(thread=thread_object).get(post_id=post_id)
+            except ObjectDoesNotExist:
+                return JsonResponse({})
             if request.POST.get('action') == 'plus':
                 post_object.bad += 1
             elif request.POST.get('action') == 'minus':
                 post_object.bad -= 1
             
+            post_object.save()
+
+            channel_layer = get_channel_layer()
+            channel_name = thread_object.name
+            async_to_sync(channel_layer.group_send)(
+                channel_name, {
+                    'type': 'send_message',
+                    'flag': 'bad_action',
+                    'post_id': post_id,
+                    'number': post_object.bad
+                }
+            )
+
             if post_object.bad >= 4:
                 channel_layer = get_channel_layer()
                 channel_name = thread_object.name
@@ -117,21 +133,8 @@ def BulletinBoardView(request, pk):
                         }
                     )
                 post_object.delete()
-                return JsonResponse({"flag":"skip"})
 
-            post_object.save()
-
-            channel_layer = get_channel_layer()
-            channel_name = thread_object.name
-            async_to_sync(channel_layer.group_send)(
-                channel_name, {
-                    'type': 'send_message',
-                    'flag': 'bad_action',
-                    'post_id': post_id,
-                    'number': post_object.bad
-                }
-            )
-            return JsonResponse({"flag":"done"})
+            return JsonResponse({})
     else:
         thread = ThreadModel.objects.get(pk=pk)
         post_datas = PostDataModel.objects.filter(thread=thread).order_by('post_id')[0:min(100, post_count)]

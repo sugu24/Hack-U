@@ -163,3 +163,21 @@
     box-shadow: 0 0 4px white, -2px -2px 4px white;
     color: white;
 }
+
+.fixed > #delete{
+    visibility: hidden;
+    width: 100%;
+    color: white;
+    background-color: rgb(37, 209, 157);
+    box-shadow: 1px 1px 1px seagreen, -1px -1px 1px seagreen;
+    border-radius: 2.5rem;
+    padding: 1rem;
+    margin: 1.5rem auto;
+}
+
+.fixed > #delete:hover{
+    left: 0;
+    top: 0;
+    box-shadow: 0 0 4px white, -2px -2px 4px white;
+    color: white;
+}
