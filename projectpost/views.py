@@ -37,10 +37,10 @@ def BulletinBoardView(request, pk):
             name = request.POST.get('name')
             time = request.POST.get('time')
             content = request.POST.get('content')
-            #process = subprocess.Popen(['python3', './/bert/bert/bert.py', '{}'.format(content)], encoding='utf8', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            #result, error = process.communicate()
-            #if result[:8] == "negative":
-            #    return JsonResponse({"error":"ネガティブな投稿なので投稿文を確認してください"})
+            process = subprocess.Popen(['python3', './/bert/bert.py', '{}'.format(content)], encoding='utf8', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            result, error = process.communicate()
+            if result[:8] == "negative":
+                return JsonResponse({"error":"ネガティブな投稿なので投稿文を確認してください"})
             postdata_object = PostDataModel.objects.create(
                 thread = thread_object,
                 post_id = thread_object.next_id,
