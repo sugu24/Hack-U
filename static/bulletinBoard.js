@@ -36,13 +36,14 @@ var bulletinBoard = document.getElementById('bulletinBoard')
 var good_stamp = new Set()
 var bad_stamp = new Set()
 var delete_stock = new Set()
+var return_post_id = []
 
 var createMassData = function(id, name, response, postdate, content, good, bad){
     //console.log(id, name, response, date, content, good, bad)
     var insertHTML = '<div class="mass_data" id="' + id + '">'
     insertHTML += '<div class="info"><span class="name">' + id + ' . ' + name + '</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="time">' + postdate + ' </span> </div>'
     insertHTML += '<div class="content">'
-    if(response != "")insertHTML += '<div>' + response + ' >>></div>'
+    if(response != "")insertHTML += '<div><a href="#' + response + '" class="jump_to_post" id="jump' + id + '">' + response + '</a> >>></div>'
     insertHTML += '<div>' + content + '</div>'
     insertHTML += '</div>'
     insertHTML += '<div class="function">'
@@ -84,8 +85,11 @@ $('#delete').on('click', function(e){
         document.getElementById(delete_element).remove()
     }
     post_count -= delete_stock.size
+    return_post_id = return_post_id.filter(n => !delete_stock.has(n))
+    if(return_post_id.length === 0)document.getElementById('fixed_left').style.visibility = "hidden"
     delete_stock = new Set()
-    document.getElementById('delete').style.visibility = "hidden"
+    document.getElementById('delete_div').style.visibility = "hidden"
+    document.getElementById('delete_count').innerText = String(delete_stock.size)
 })
 
 $('#post_form').on('submit', function(e) {
@@ -119,6 +123,20 @@ $('#post_form').on('submit', function(e) {
         if(response.error != "")document.getElementById('error').innerText = response.error
         else getPostsData()
     })
+})
+
+$(document).on('click', "#return_to_post",function(e){
+    e.preventDefault()
+    document.getElementById(return_post_id.pop()).scrollIntoView(true)
+    if (return_post_id.length === 0)
+        document.getElementById('fixed_left').style.visibility = "hidden"
+})
+
+$(document).on('click', '.jump_to_post', function(){
+    var id = $(this).attr('id')
+    document.getElementById('fixed_left').style.visibility = "visible"
+    return_post_id.push(id.slice(4,id.length))
+    console.log(return_post_id)
 })
 
 $(document).on('click', '.response',function(){
@@ -212,15 +230,12 @@ dataSocket.onmessage = function(e) {
     }else if(data.flag == "bad_action"){
         document.getElementById('bad_number_show'+String(data.post_id)).innerText = data.number
     }else if(data.flag == "delete_action"){
-        if(data.response != null){
-            for(var object of data.response){
-                delete_stock.add(String(object["post_id"]))
-                document.getElementById(String(object["post_id"])).style.color = "#00000042"
-            }
+        for(var d of data.delete){
+            delete_stock.add(String(d))
+            document.getElementById(String(d)).style.color = "#00000042"
         }
-        delete_stock.add(String(data.delete))
-        document.getElementById(String(data.delete)).style.color = "#00000042"
-        document.getElementById('delete').style.visibility = "visible"
+        document.getElementById('delete_count').innerText = String(delete_stock.size)
+        document.getElementById('delete_div').style.visibility = "visible"
     }
 };
 

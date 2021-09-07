@@ -111,27 +111,25 @@ def BulletinBoardView(request, pk):
             )
 
             if post_object.bad >= 4:
+                from collections import deque
                 channel_layer = get_channel_layer()
                 channel_name = thread_object.name
-                delete_post = PostDataModel.objects.filter(thread=thread_object).filter(response=post_object)
-                if len(delete_post) > 0:
-                    async_to_sync(channel_layer.group_send)(
-                        channel_name, {
-                            'type' : 'delete_message',
-                            'flag' : 'delete_action',
-                            'response': list(delete_post.values()),
-                            'delete': post_object.post_id
-                        }
-                    )
-                else:
-                    async_to_sync(channel_layer.group_send)(
-                        channel_name, {
-                            'type' : 'delete_message',
-                            'flag' : 'delete_action',
-                            'response': None,
-                            'delete': post_object.post_id
-                        }
-                    )
+                delete_id = deque([post_object.post_id])
+                response_id = []
+                while len(delete_id) > 0:
+                    frm_post_id = delete_id.popleft()
+                    to_objects = PostDataModel.objects.filter(thread=thread_object).filter(response_post_id=frm_post_id)
+                    for to_object in to_objects:
+                        delete_id.append(to_object.post_id)
+                    response_id.append(frm_post_id)
+                
+                async_to_sync(channel_layer.group_send)(
+                    channel_name, {
+                        'type' : 'delete_message',
+                        'flag' : 'delete_action',
+                        'delete': response_id
+                    }
+                )
                 post_object.delete()
 
             return JsonResponse({})

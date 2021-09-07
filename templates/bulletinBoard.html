@@ -13,13 +13,18 @@
 
 <div class="container">
     <div id="bulletinBoard">
+        <div id="fixed_left">
+            <a href="" id="return_to_post">↓</a>
+        </div>
         <div class="thread_name">スレッド名 : <span id="thread_name_span">{{ thread_name }}</span></div>
         {% for post_data in post_datas %}
         <div class="mass_data" id="{{ post_data.post_id }}">
             <div class="info"><span class="name">{{ post_data.post_id }} . {{ post_data.name }}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="time">{{ post_data.postdate }} </span> </div>
             <div class="content">
                 {% if post_data.response %}
-                <div>{{ post_data.response.post_id }} >>></div>
+                <div>
+                    <a href="#{{ post_data.response.post_id }}" class="jump_to_post" id="jump{{ post_data.post_id }}">{{ post_data.response.post_id }}</a> >>>
+                </div>
                 {% endif %}
                 <div>{{ post_data.content }}</div>
             </div>
@@ -62,8 +67,11 @@
     </div>
 </div>
 
-<div class="fixed">
-    <button class="btn" type="button" id="delete" name="delete">削除</button>
+<div class="fixed_right">
+    <div id="delete_div">
+        <button class="btn" type="button" id="delete" name="delete">削除</button>
+        <div id="delete_count">1</div>
+    </div>
     <form id="update_form" action="" method="POST">{% csrf_token %}
         <button class="btn" type="submit" id="update" name="update">読込</button>
     </form>

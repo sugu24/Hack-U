@@ -1,4 +1,6 @@
 .container{
+    display: absolute;
+    top:3rem;
     padding-top: 4rem;
 }
 
@@ -17,6 +19,8 @@
 
 .mass_data{
     border-bottom: 1px dashed black;
+    padding-top: 3rem;
+    margin-top: -3rem;
 }
 
 .info{
@@ -123,13 +127,13 @@
     color: white;
 }
 
-.fixed{
+.fixed_right{
     position: fixed;
     left: 80%;
     top: 70%;
 }
 
-.fixed > a{
+.fixed_right > a{
     width: 100%;
     color: white;
     padding: 1.1rem;
@@ -140,7 +144,7 @@
     margin: 1.5rem auto;
 }
 
-.fixed > #update_form > #update{
+.fixed_right > #update_form > #update{
     width: 100%;
     color: white;
     background-color: rgb(37, 209, 157);
@@ -150,22 +154,26 @@
     margin: 1.5rem auto;
 }
 
-.fixed > a:hover {
+.fixed_right > a:hover {
     left: 0;
     top: 0;
     box-shadow: 0 0 4px white, -2px -2px 4px white;
     color: white;
 }
 
-.fixed > #update_form > #update:hover{
+.fixed_right > #update_form > #update:hover{
     left: 0;
     top: 0;
     box-shadow: 0 0 4px white, -2px -2px 4px white;
     color: white;
 }
 
-.fixed > #delete{
+.fixed_right > #delete_div{
+    position: relative;
     visibility: hidden;
+}
+
+.fixed_right > #delete_div > #delete{
     width: 100%;
     color: white;
     background-color: rgb(37, 209, 157);
@@ -175,9 +183,36 @@
     margin: 1.5rem auto;
 }
 
-.fixed > #delete:hover{
+.fixed_right > #delete_div > #delete:hover{
     left: 0;
     top: 0;
     box-shadow: 0 0 4px white, -2px -2px 4px white;
     color: white;
+}
+
+.fixed_right > #delete_div > #delete_count{
+    background-color: rgb(250 101 162);
+    border-radius: 5rem;
+    color: white;
+    position: absolute;
+    padding: 0.25rem 0.75rem;
+    top: 10%;
+    left:70%;
+}
+
+#fixed_left{
+    position: fixed;
+    top:50%;
+    margin-left: -4rem;
+    visibility: hidden;
+}
+
+#fixed_left > #return_to_post{
+    font-size: 2rem;
+    color: white;
+    background-color: rgb(37, 209, 157);
+    border-radius: 3rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem; 
+    text-decoration: none;
 }

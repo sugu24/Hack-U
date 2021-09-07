@@ -32,10 +32,8 @@ class Consumer(WebsocketConsumer):
 
     def delete_message(self, event):
         flag = event['flag']
-        response = event['response']
         delete = event['delete']
         self.send(text_data=json.dumps({
             'flag' : flag,
-            'response' : response,
             'delete' : delete
         }))
