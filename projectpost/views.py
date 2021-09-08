@@ -67,7 +67,10 @@ def BulletinBoardView(request, pk):
         elif request_type == 'good_action':
             post_id = request.POST.get('post_id')
             thread_object = ThreadModel.objects.get(pk=pk)
-            post_object = PostDataModel.objects.filter(thread=thread_object).get(post_id=post_id)
+            try:
+                post_object = PostDataModel.objects.filter(thread=thread_object).get(post_id=post_id)
+            except ObjectDoesNotExist:
+                return JsonResponse({})
             if request.POST.get('action') == 'plus':
                 post_object.good += 1
             elif request.POST.get('action') == 'minus':
